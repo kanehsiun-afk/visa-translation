@@ -116,12 +116,6 @@ export interface PdfRow {
   original?: string;
 }
 
-/** 户口本印章文字块（左右两栏，各 2 行）。 */
-export interface PdfSealBlock {
-  top: string;
-  bottom: string;
-}
-
 export interface PdfRendererOptions {
   /** 首页起始 y（默认页顶边距处）。 */
   startY?: number;
@@ -454,13 +448,11 @@ export class PdfRenderer {
   /**
    * 绘制中国户口本「户主页」固定画布。
    * 坐标按用户提供的 670 × 837 参考图逐区校准，禁止内容自适应撑高。
+   * 极简版：户主页只保留 5 条 Notes + 4 字段表 + 底部签发日期行，不含印章与登记员签名。
    */
   drawHukoubenHeadPage(opts: {
     notes: string[];
     headRows: PdfRow[];
-    sealLeft: PdfSealBlock;
-    sealRight: PdfSealBlock;
-    registrarName: string;
     issueDateText: string;
   }) {
     const { regular, bold } = this.fonts;
@@ -639,63 +631,21 @@ export class PdfRenderer {
       blueDash,
     );
 
-    const drawCenteredBlock = (
-      text: string,
-      left: number,
-      width: number,
-      centerY: number,
-      size = 13.2,
-    ) => {
-      if (!text) return;
-      const lines = wrapText(text, regular, size, width - 24);
-      const lineH = size * 1.45;
-      const blockH = lines.length * lineH;
-      let y = centerY + blockH / 2 - lineH;
-      lines.forEach((line) => {
-        const w = regular.widthOfTextAtSize(line, size);
-        page.drawText(line, {
-          x: left + (width - w) / 2,
-          y,
-          size,
-          font: regular,
-          color: COLORS.black,
-        });
-        y -= lineH;
-      });
-    };
+    // 中线浅蓝虚线：保留作为视觉分割，去除印章后只画表格下方到签名区顶部的中线。
+    this.drawDashedLine(
+      { x: 337, y: row2Bottom },
+      { x: 337, y: signatureTop },
+      3,
+      2,
+      0.6,
+      blueDash,
+    );
 
-    // 左右印章文字（两组固定纵向中心）。
-    drawCenteredBlock(opts.sealLeft.top, 35, 302, 238);
-    drawCenteredBlock(opts.sealLeft.bottom, 35, 302, 174);
-    drawCenteredBlock(opts.sealRight.top, 337, 300, 238);
-    drawCenteredBlock(opts.sealRight.bottom, 337, 300, 174);
-
-    // 底部签名行：标签（黑）+ 值（未填时灰字占位，已填时黑字值）。
-    // 实值时附加 "(Sealed)" 后缀，灰态时不附。
+    // 底部仅保留「Issued on: date」行（右对齐到 x=630）；未填时值灰色占位。
     const signatureSize = 13.2;
-    const prefixSign = "Signature or Seal of Registrar: ";
     const prefixDate = "Issued on: ";
-    const signEmpty = isEmpty(opts.registrarName);
     const dateEmpty = isEmpty(opts.issueDateText);
-    const signValueText = signEmpty ? "name" : `${opts.registrarName} (Sealed)`;
     const dateValueText = dateEmpty ? "date" : opts.issueDateText;
-
-    page.drawText(prefixSign, {
-      x: 41,
-      y: 48,
-      size: signatureSize,
-      font: regular,
-      color: COLORS.black,
-    });
-    page.drawText(signValueText, {
-      x: 41 + regular.widthOfTextAtSize(prefixSign, signatureSize),
-      y: 48,
-      size: signatureSize,
-      font: regular,
-      color: signEmpty ? emptyColor : COLORS.black,
-    });
-
-    // 右侧「Issued on: date」整体右对齐到 x=630。
     const issuedFull = `${prefixDate}${dateValueText}`;
     const issuedRightEnd = 630;
     page.drawText(prefixDate, {

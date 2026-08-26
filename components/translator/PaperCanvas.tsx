@@ -169,22 +169,9 @@ function HukoubenHeadPage({ h }: { h: HukoubenBundle }) {
           </HukouFixedCell>
         </div>
 
-        {/* 印章文字区：固定 243px 高；中线为参考图的浅蓝虚线 */}
-        <div className="relative grid grid-cols-2" style={{ height: 243 }}>
-          <div
-            className="absolute bottom-0 left-1/2 top-0 w-px"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(to bottom, #8db4e2 0 3px, transparent 3px 5px)",
-            }}
-          />
-          <SealTextBlock top={h.sealLeft.top} bottom={h.sealLeft.bottom} />
-          <SealTextBlock top={h.sealRight.top} bottom={h.sealRight.bottom} />
-        </div>
-
-        {/* 签名行：参考图使用浅蓝虚线顶边；未填字段显示灰色占位文字 */}
+        {/* 底部签发日期行：未填字段显示灰色占位文字 */}
         <div
-          className="flex items-center justify-between px-[7px]"
+          className="flex items-center justify-end px-[7px]"
           style={{
             height: 41,
             borderTop: "1px dashed #8db4e2",
@@ -192,14 +179,6 @@ function HukoubenHeadPage({ h }: { h: HukoubenBundle }) {
             lineHeight: "16px",
           }}
         >
-          <span>
-            <span className="text-black">Signature or Seal of Registrar: </span>
-            {isEmpty(h.registrarName) ? (
-              <span className="text-[#c9c9c9]">name</span>
-            ) : (
-              <span className="text-black">{h.registrarName} (Sealed)</span>
-            )}
-          </span>
           <span>
             <span className="text-black">Issued on: </span>
             {isEmpty(h.issueDateText) ? (
@@ -240,18 +219,6 @@ function HukouFixedCell({
       }}
     >
       {display}
-    </div>
-  );
-}
-
-function SealTextBlock({ top, bottom }: { top: string; bottom: string }) {
-  return (
-    <div
-      className="flex flex-col items-center justify-center px-3 text-center"
-      style={{ fontSize: 13.2, lineHeight: "20px", gap: 19 }}
-    >
-      <p>{top}</p>
-      <p>{bottom}</p>
     </div>
   );
 }

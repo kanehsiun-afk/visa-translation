@@ -172,9 +172,6 @@ export async function buildHukoubenPdf(input: BuildPdfInput): Promise<Uint8Array
     r.drawHukoubenHeadPage({
       notes: h.notes,
       headRows: h.headRows,
-      sealLeft: h.sealLeft,
-      sealRight: h.sealRight,
-      registrarName: h.registrarName,
       issueDateText: h.issueDateText,
     });
 

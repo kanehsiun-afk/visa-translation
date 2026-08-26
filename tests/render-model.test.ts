@@ -16,16 +16,12 @@ describe("buildRenderModel", () => {
     expect(model.hukouben!.cards).toHaveLength(0);
   });
 
-  it("户口本：hukouben 版式生成单页户主页 + Notes + 双印章文字 + 签名", () => {
+  it("户口本：hukouben 版式生成单页户主页 + Notes + 签发日期", () => {
     const def = getDocument("household-register")!;
     const values = {
       householdCategory: "家庭户",
       headName: "张三",
       headName__en: "ZHANG SAN",
-      bureauName: "Chaoyang Branch",
-      cityName: "Beijing",
-      stationName: "Sanlitun",
-      registrarName: "Wang Wu",
       issueDate: "2024-05-01",
     };
     const model = buildRenderModel(def, values, []);
@@ -49,36 +45,14 @@ describe("buildRenderModel", () => {
 
     expect(model.hukouben!.cards).toHaveLength(0);
 
-    // 双印章文字（左 = 省级公安机关 + 户口登记机关；右 = 户口登记机关 + 公安派出所）
-    expect(model.hukouben!.sealLeft.top).toBe(
-      "Special Seal for Household of Public Security Bureau at Provincial Level",
-    );
-    expect(model.hukouben!.sealLeft.bottom).toBe(
-      "Special Seal for Household of Chaoyang Branch (Sealed)",
-    );
-    expect(model.hukouben!.sealRight.top).toBe(
-      "Special Seal for Household of Household Registration Authority",
-    );
-    expect(model.hukouben!.sealRight.bottom).toBe(
-      "Special Seal for Household of Beijing Public Security Bureau Sanlitun Police Station (Sealed)",
-    );
-
-    // 登记员 + 签发日期
-    expect(model.hukouben!.registrarName).toBe("Wang Wu");
+    // 极简版：无印章文字、无登记员签名，仅保留签发日期。
     expect(model.hukouben!.issueDateText).toBe("1 May 2024");
   });
 
-  it("户口本：缺省印章/登记员字段时使用占位符", () => {
+  it("户口本：缺省签发日期时为空字符串", () => {
     const def = getDocument("household-register")!;
     const model = buildRenderModel(def, { householdCategory: "家庭户" }, []);
 
-    expect(model.hukouben!.sealLeft.bottom).toBe(
-      "Special Seal for Household of XXXXX (Sealed)",
-    );
-    expect(model.hukouben!.sealRight.bottom).toBe(
-      "Special Seal for Household of XXX Public Security Bureau XXX Police Station (Sealed)",
-    );
-    expect(model.hukouben!.registrarName).toBe("");
     expect(model.hukouben!.issueDateText).toBe("");
   });
 

@@ -3,7 +3,7 @@ import { HOUSEHOLD_TYPE } from "@/lib/dictionaries";
 
 /**
  * 户口本翻译件：严格按参考样稿绘制单页户主页。
- * 字段：户别 / 户主姓名 / 户号 / 住址 / 签发日期 / 印章机关 / 登记员签名。
+ * 字段：户别 / 户主姓名 / 户号 / 住址 / 签发日期（极简版：不含印章与登记员签名）。
  */
 export const householdRegister: DocumentDefinition = {
   type: "household-register",
@@ -64,38 +64,6 @@ export const householdRegister: DocumentDefinition = {
           labelEn: "Date of Issue",
           type: "date",
           translationMode: "none",
-        },
-        {
-          id: "bureauName",
-          labelZh: "户口登记机关",
-          labelEn: "Household Registration Authority",
-          type: "text",
-          translationMode: "manual",
-          hint: "印章说明「Special Seal for Household of XXX (Sealed)」中的 XXX，例如 Chaoyang Branch。",
-        },
-        {
-          id: "cityName",
-          labelZh: "公安分局所在城市",
-          labelEn: "City of Public Security Bureau",
-          type: "text",
-          translationMode: "manual",
-          hint: "印章说明「Special Seal for Household of XXX Public Security Bureau」中的 XXX，例如 Beijing。",
-        },
-        {
-          id: "stationName",
-          labelZh: "派出所名称",
-          labelEn: "Police Station Name",
-          type: "text",
-          translationMode: "manual",
-          hint: "印章说明「XXX Police Station (Sealed)」中的 XXX，例如 Sanlitun。",
-        },
-        {
-          id: "registrarName",
-          labelZh: "登记员签名",
-          labelEn: "Registrar's Signature / Seal",
-          type: "text",
-          translationMode: "manual",
-          hint: "底部「Signature or Seal of Registrar: XXX (Sealed)」中的 XXX。",
         },
       ],
     },

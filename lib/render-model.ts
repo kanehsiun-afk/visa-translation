@@ -41,26 +41,12 @@ export interface HukoubenCard {
   rows: RenderRow[];
 }
 
-/** 户口本印章文字（实物户主页底部左右两栏各 2 行）。 */
-export interface HukoubenSealBlock {
-  /** 第 1 行（固定文本）。 */
-  top: string;
-  /** 第 2 行（含用户填入的占位字段）。 */
-  bottom: string;
-}
-
 /** 中国户口本专用渲染数据：首页「户主页」的固定版式元素。 */
 export interface HukoubenBundle {
   /** 顶部 5 条 Notes 全文（Attention 标题 + 编号段落）。 */
   notes: string[];
   /** 户主页 4 个字段（户别 / 户主 / 户号 / 住址），按表格顺序。 */
   headRows: RenderRow[];
-  /** 左印章文字（实物：省级公安机关 + 户口登记机关）。 */
-  sealLeft: HukoubenSealBlock;
-  /** 右印章文字（实物：户口登记机关专用章 + 公安派出所章）。 */
-  sealRight: HukoubenSealBlock;
-  /** 底部「Signature or Seal of Registrar: XXX (Sealed)」中的姓名。 */
-  registrarName: string;
   /** 底部「Issued on: XXX」中的日期。 */
   issueDateText: string;
   /** 个人登记卡（每个成员一张）。 */
@@ -181,22 +167,7 @@ export function buildRenderModel(
       };
     });
 
-    // 印章文字：左 = 省级公安机关 + 户口登记机关（用户填的 bureauName）；
-    //             右 = 户口登记机关 + 用户填的 cityName + stationName。
-    const bureau = (values["bureauName"] ?? "").trim() || "XXXXX";
-    const city = (values["cityName"] ?? "").trim() || "XXX";
-    const station = (values["stationName"] ?? "").trim() || "XXX";
-    const sealLeft: HukoubenSealBlock = {
-      top: "Special Seal for Household of Public Security Bureau at Provincial Level",
-      bottom: `Special Seal for Household of ${bureau} (Sealed)`,
-    };
-    const sealRight: HukoubenSealBlock = {
-      top: "Special Seal for Household of Household Registration Authority",
-      bottom: `Special Seal for Household of ${city} Public Security Bureau ${station} Police Station (Sealed)`,
-    };
-
-    // 登记员签名 + 签发日期
-    const registrarName = (values["registrarName"] ?? "").trim();
+    // 签发日期
     const issueField = headFields.find((f) => f.id === "issueDate");
     const issueDateText = issueField ? getEnglishValue(issueField, values) : "";
 
@@ -211,9 +182,6 @@ export function buildRenderModel(
       hukouben: {
         notes: HUKOUBEN_NOTES,
         headRows,
-        sealLeft,
-        sealRight,
-        registrarName,
         issueDateText,
         cards,
       },

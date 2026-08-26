@@ -27,16 +27,6 @@ describe("PdfRenderer.drawHukoubenHeadPage", () => {
         { label: "Household No.", value: "XXXXX" },
         { label: "Address", value: "XXXXXXXX" },
       ],
-      sealLeft: {
-        top: "Special Seal for Household of Public Security Bureau at Provincial Level",
-        bottom: "Special Seal for Household of XXXXX (Sealed)",
-      },
-      sealRight: {
-        top: "Special Seal for Household of Household Registration Authority",
-        bottom:
-          "Special Seal for Household of XXX Public Security Bureau XXX Police Station (Sealed)",
-      },
-      registrarName: "XXX",
       issueDateText: "XXX",
     });
 
