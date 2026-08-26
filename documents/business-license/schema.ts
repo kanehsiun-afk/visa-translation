@@ -1,0 +1,128 @@
+import type { DocumentDefinition } from "@/lib/types";
+import { COMPANY_TYPE } from "@/lib/dictionaries";
+
+export const businessLicense: DocumentDefinition = {
+  type: "business-license",
+  titleZh: "营业执照",
+  titleEn: "Business License",
+  descriptionZh: "适用于企业、自雇、法人相关材料。",
+  pdfTitleEn: "Business License",
+  pdfSubtitleEn: "Translation of Business License (营业执照)",
+  headerNote:
+    "This is an English translation prepared for reference. The original Chinese document remains the authoritative record.",
+  fileName: "Business-License-Translation",
+  kind: "translation",
+  sections: [
+    {
+      id: "basic",
+      labelZh: "基本信息",
+      labelEn: "Basic Information",
+      fields: [
+        {
+          id: "creditCode",
+          labelZh: "统一社会信用代码",
+          labelEn: "Unified Social Credit Code",
+          type: "text",
+          translationMode: "none",
+          hint: "证件号码仅在本地处理，不进行联网校验。",
+        },
+        {
+          id: "name",
+          labelZh: "名称",
+          labelEn: "Company Name",
+          type: "text",
+          translationMode: "manual",
+          fullWidth: true,
+          hint: "如无法确定官方英文名，可填写公司登记或官网使用的英文名称。",
+        },
+        {
+          id: "companyType",
+          labelZh: "类型",
+          labelEn: "Company Type",
+          type: "select",
+          options: COMPANY_TYPE,
+          translationMode: "fixed",
+        },
+        {
+          id: "legalRepresentative",
+          labelZh: "法定代表人",
+          labelEn: "Legal Representative",
+          type: "text",
+          translationMode: "manual",
+          autoTranslate: "name",
+          hint: "输入中文姓名将自动转为拼音，可手动修改为护照英文名。",
+        },
+      ],
+    },
+    {
+      id: "scope",
+      labelZh: "经营范围",
+      labelEn: "Business Scope",
+      fields: [
+        {
+          id: "businessScope",
+          labelZh: "经营范围",
+          labelEn: "Business Scope",
+          type: "textarea",
+          translationMode: "manual",
+          fullWidth: true,
+          hint: "中文原文 + 英文翻译。可先粘贴中文，再在下方英文栏填写对应译文。",
+        },
+      ],
+    },
+    {
+      id: "registration",
+      labelZh: "登记信息",
+      labelEn: "Registration Information",
+      fields: [
+        {
+          id: "registeredCapital",
+          labelZh: "注册资本",
+          labelEn: "Registered Capital",
+          type: "text",
+          translationMode: "manual",
+          hint: "例如：人民币 100 万元 → RMB 1,000,000。",
+        },
+        {
+          id: "establishmentDate",
+          labelZh: "成立日期",
+          labelEn: "Date of Establishment",
+          type: "date",
+          translationMode: "none",
+        },
+        {
+          id: "registeredAddress",
+          labelZh: "住所",
+          labelEn: "Registered Address",
+          type: "textarea",
+          translationMode: "manual",
+          autoTranslate: "address",
+          fullWidth: true,
+          hint: "输入中文地址将自动转写为英文，可手动修改。",
+        },
+        {
+          id: "businessTerm",
+          labelZh: "营业期限",
+          labelEn: "Business Term",
+          type: "text",
+          translationMode: "manual",
+          hint: "例如：长期 → Long-term；或 2015-01-01 至 2035-01-01 → 1 January 2015 to 1 January 2035。",
+        },
+        {
+          id: "registrationAuthority",
+          labelZh: "登记机关",
+          labelEn: "Registration Authority",
+          type: "text",
+          translationMode: "manual",
+        },
+        {
+          id: "issueDate",
+          labelZh: "发证日期",
+          labelEn: "Date of Issue",
+          type: "date",
+          translationMode: "none",
+        },
+      ],
+    },
+  ],
+};

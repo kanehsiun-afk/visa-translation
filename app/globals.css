@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  /* —— 便签翻译件 Design System —— */
+  --color-canvas: #f7f7f5; /* 暖白背景 */
+  --color-surface: #ffffff; /* 卡片表面 */
+  --color-ink: #191919; /* 正文 */
+  --color-ink-2: #666666; /* 辅助文本 */
+  --color-ink-3: #9a9a97; /* 更弱文本 */
+  --color-line: #e8e8e5; /* 1px 边框 */
+  --color-line-2: #efefec; /* 更浅边框 */
+  --color-brand: #1f6b4a; /* 深绿主色 */
+  --color-brand-2: #164c34; /* 深绿 hover */
+  --color-brand-soft: #eef4f0; /* 深绿浅底 */
+  --color-warn: #a16207; /* 提示色 */
+  --color-warn-soft: #fdf6e9;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 隐藏 number input 的上下箭头 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* 滚动条弱化 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d8d8d4 transparent;
+}
